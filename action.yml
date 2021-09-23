@@ -1,0 +1,57 @@
+name: "Fixinator"
+description: "Keep insecure CFML out of production by performing security audits with Fixinator"
+inputs:
+  api_key:
+    description: "The Fixinator API key, purchased from fixinator.app"
+    required: true
+  # api_url:
+  #   description: "For Fixinator Enterprise, you can point to a self-hosted Fixinator instance. Leave this blank for the default Fixinator server."
+  #   required: false
+  #   default: ""
+  path:
+    description: "The folder or file to scan. You can also pass a file globber pattern, like `models/**/*.cfc`"
+    required: false
+  confidence:
+    description: "Possible values are `none`, `low`, `medium` or `high`. This setting filters out results that the scanner is not confident about. Setting it to a lower value will show more issues but may have some false positives."
+    required: false
+    default: "high"
+  severity:
+    description: "Possible values are: `low`, `medium` or `high`. Filter by severity of the issues found."
+    required: false
+    default: "low"
+  autofix:
+    description: "Possible values are `off` or `auto`. Autofix identified issues. **This action cannot support the `prompt` option**."
+    required: false
+    default: "off"
+  resultFile:
+    description: "Writes results to a file specified by the path in resultFile. You may specify a comma separated list of paths if you want to write multiple formats."
+    required: false
+  resultFormat:
+    description: "Specify a format for the `resultFile`: `json` (default), `html`, `pdf`, `csv`, `junit`, `sast`, or `findbugs`. You may specify a comma separated list of formats and `resultFile` paths if you want to write multiple files."
+    required: false
+    default: "json"
+  ignorePaths:
+    description: "A file globber pattern of paths to ignore from the scan."
+    required: false
+  failOnIssues:
+    description: "Possible values are `true` and `false`. Fail the build when issues are found."
+    required: false
+    default: "true"
+runs:
+  using: "docker"
+  image: "Dockerfile"
+  args:
+    # - ${{ inputs.api_url }}
+    - ${{ inputs.path }}
+    - ${{ inputs.confidence }}
+    - ${{ inputs.severity }}
+    - ${{ inputs.autofix }}
+    - ${{ inputs.resultFile }}
+    - ${{ inputs.resultFormat }}
+    - ${{ inputs.ignorePaths }}
+    - ${{ inputs.failOnIssues }}
+  env:
+    FIXINATOR_API_KEY: ${{ inputs.api_key }}
+branding:
+  icon: 'shield'
+  color: 'orange'

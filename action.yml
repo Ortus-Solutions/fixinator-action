@@ -1,5 +1,5 @@
-name: "Fixinator"
-description: "Keep insecure CFML out of production by performing security audits with Fixinator"
+name: "Fixinator Scan"
+description: "Scan for CFML vulnerabilities with Fixinator"
 inputs:
   api_key:
     description: "The Fixinator API key, purchased from fixinator.app"
